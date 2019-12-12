@@ -1,12 +1,12 @@
 class TicTacToeBoard:
     def __init__(self):
-        self.board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+        self.board = [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]
 
     def is_full(self):
-        return ' ' not in self.board
+        return ' ' not in (self.board[0] + self.board[1] + self.board[2])
 
     def is_valid_move(self, pos):
-        return self.board[pos] is ' '
+        return self.board[pos // 3][pos % 3] is ' '
 
     def move_possible(self, pos):
         if not self.is_valid_move(pos):
@@ -16,24 +16,23 @@ class TicTacToeBoard:
             return True
 
     def perform_move(self, pos, player):
-        self.board[pos] = player.symbol
+        self.board[pos // 3][pos % 3] = player.symbol
 
     def check_rows(self):
         for i in range(3):
-            j = i * 3
-            if self.board[0 + j] == self.board[1 + j] == self.board[2 + j] and self.board[0 + j] is not ' ':
+            if self.board[i][0] == self.board[i][1] == self.board[i][2] and self.board[i][0] is not ' ':
                 return True
         return False
 
     def check_columns(self):
         for i in range(3):
-            if self.board[i] == self.board[i + 3] == self.board[i + 6] and self.board[i] is not ' ':
+            if self.board[0][i] == self.board[1][i] == self.board[2][i] and self.board[0][i] is not ' ':
                 return True
         return False
 
     def check_diagonals(self):
-        return (self.board[0] == self.board[4] == self.board[8] and self.board[4] is not ' ' or
-                self.board[2] == self.board[4] == self.board[6]) and self.board[4] is not ' '
+        return self.board[0][0] == self.board[1][1] == self.board[2][2] and self.board[1][1] is not ' ' or \
+               self.board[0][2] == self.board[1][1] == self.board[2][0] and self.board[1][1] is not ' '
 
     def check_game_status(self, player):
         if self.check_rows() or self.check_columns() or self.check_diagonals():
@@ -42,11 +41,12 @@ class TicTacToeBoard:
             exit(0)
 
     def print_board(self, with_id=False):
+        symbols = []
+        for line in reversed(self.board):
+            for symbol in line:
+                symbols.append(symbol)
         if with_id:
             symbols = list('789456123')
-        else:
-            symbols = self.board[6:9] + self.board[3:6] + self.board[0:3]
-
         print('''
         ###########
         ##%s##%s##%s##
