@@ -2,11 +2,11 @@ class TicTacToeBoard:
     def __init__(self):
         self.board = [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]
 
-    def perform_move(self, pos, player):
-        self.board[pos // 3][pos % 3] = player.symbol
-
     def is_full(self):
         return ' ' not in (self.board[0] + self.board[1] + self.board[2])
+
+    def is_valid_move(self, pos):
+        return self.board[pos // 3][pos % 3] is ' '
 
     def move_possible(self, pos):
         if not self.is_valid_move(pos):
@@ -15,8 +15,8 @@ class TicTacToeBoard:
         else:
             return True
 
-    def is_valid_move(self, pos):
-        return self.board[pos // 3][pos % 3] is ' '
+    def perform_move(self, pos, player):
+        self.board[pos // 3][pos % 3] = player.symbol
 
     def check_rows(self):
         for i in range(3):
