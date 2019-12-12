@@ -4,7 +4,6 @@ import os
 class TicTacToeBoard:
     def __init__(self, player1, player2):
         self.board = [[None, None, None], [None, None, None], [None, None, None]]
-        self.free_spaces = 9
         self.player1 = player1
         self.player2 = player2
         self.current_player = player1
@@ -12,12 +11,11 @@ class TicTacToeBoard:
     def switch_current_player(self):
         self.current_player = self.player2 if self.current_player == self.player1 else self.player1
 
-    def mark_space(self, pos):
+    def perform_move(self, pos):
         self.board[pos // 3][pos % 3] = self.current_player == self.player1
-        self.free_spaces -= 1
 
     def is_full(self):
-        return self.free_spaces == 0
+        return None not in (self.board[0] + self.board[1] + self.board[2])
 
     def move_possible(self, pos):
         if not self.is_valid_move(pos):
@@ -99,7 +97,7 @@ def main():
             print("Please enter a digit between 1-9")
             continue
         if board.move_possible(choice):
-            board.mark_space(choice)
+            board.perform_move(choice)
             board.check_game_status()
             board.print_board()
 
